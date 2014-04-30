@@ -1,6 +1,6 @@
 # ActionButton
 
-![Android-ActionButton](https://github.com/klinker41/Android-ActionButton/preview.png)
+![Android-ActionButton](https://raw.githubusercontent.com/klinker41/Android-ActionButton/master/preview.png)
 
 ### Information
 

@@ -14,7 +14,7 @@ Here is a sample to show a button:
 final ActionButton button = new ActionButton(mContext);
 button.setImageResource(R.drawable.icon);
 button.setColors(getResources().getColor(android.R.color.holo_blue_light),
-    getResources.getColor(android.R.color.holo_blue_dark));
+    getResources().getColor(android.R.color.holo_blue_dark));
 button.setOnClickListener(new OnClickListener() {
     @Override
     public void onClick(View v) {

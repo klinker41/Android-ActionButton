@@ -24,7 +24,6 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Handler;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
@@ -44,11 +43,17 @@ public class ActionButton extends ImageButton {
     // some default constants for initializing the ActionButton
     public static final int DEFAULT_DISTANCE_FROM_BOTTOM = 100;
     public static final int DEFAULT_DISTANCE_FROM_RIGHT = 60;
-    public static final int DEFAULT_ANIMATION_TIME = 150;
+    public static final int DEFAULT_SLIDE_ANIMATION_TIME = 150;
+    public static final int DEFAULT_FADE_ANIMATION_TIME = 700;
     public static final int DEFAULT_WIDTH = 50;
     public static final int DEFAULT_HEIGHT = 50;
     public static final int DEFAULT_COLOR = 0xFFCC0000;
     public static final int DEFAULT_COLOR_SELECTED = 0xFFD94B4B;
+
+    // animations that can be set for the ActionButton when it is showing and hiding
+    public enum ActionButtonAnimation {
+        SLIDE_FROM_BOTTOM, FADE
+    }
 
     // set up default values
     private int distanceFromBottom = DEFAULT_DISTANCE_FROM_BOTTOM;
@@ -56,6 +61,7 @@ public class ActionButton extends ImageButton {
     private int width = DEFAULT_WIDTH;
     private int height = DEFAULT_HEIGHT;
     private boolean isShowing = false;
+    private ActionButtonAnimation animation = ActionButtonAnimation.SLIDE_FROM_BOTTOM;
 
     /**
      * Default constructor
@@ -164,6 +170,15 @@ public class ActionButton extends ImageButton {
     }
 
     /**
+     * Sets the animation for when the button shows and hides
+     *
+     * @param anim the animation to be used
+     */
+    public void setAnimation(ActionButtonAnimation anim) {
+        this.animation = anim;
+    }
+
+    /**
      * Animates the ActionButton onto the screen so that the user may interact.
      * Animation occurs from the bottom of the screen, moving up until it reaches the
      * appropriate distance from the bottom.
@@ -186,11 +201,21 @@ public class ActionButton extends ImageButton {
         float screenWidth = size.x;
         float screenHeight = size.y;
 
-        // perform the animation with an object animator
+        // perform the animation with an object animator, default to sliding up from bottom
         setTranslationX(screenWidth - toDp(activity, distanceFromRight));
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.Y, screenHeight, screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, distanceFromBottom));
-        animator.setInterpolator(new DecelerateInterpolator());
-        animator.setDuration(DEFAULT_ANIMATION_TIME);
+        ObjectAnimator animator;
+        switch (animation) {
+            case FADE:
+                setTranslationY(screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, distanceFromBottom));
+                animator = ObjectAnimator.ofFloat(this, View.ALPHA, 0.0f, 1.0f);
+                animator.setDuration(DEFAULT_FADE_ANIMATION_TIME);
+                break;
+            default:
+                animator = ObjectAnimator.ofFloat(this, View.Y, screenHeight, screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, distanceFromBottom));
+                animator.setInterpolator(new DecelerateInterpolator());
+                animator.setDuration(DEFAULT_SLIDE_ANIMATION_TIME);
+        }
+
         animator.start();
 
         isShowing = true;
@@ -212,9 +237,20 @@ public class ActionButton extends ImageButton {
 
         // perform animation
         setTranslationX(screenWidth - toDp(activity, distanceFromRight));
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.Y, screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, DEFAULT_HEIGHT), screenHeight + toDp(activity, height));
-        animator.setInterpolator(new AccelerateInterpolator());
-        animator.setDuration(DEFAULT_ANIMATION_TIME);
+        ObjectAnimator animator;
+        int animTime;
+        switch (animation) {
+            case FADE:
+                animator = ObjectAnimator.ofFloat(this, View.ALPHA, 1.0f, 0.0f);
+                animTime = DEFAULT_FADE_ANIMATION_TIME;
+                break;
+            default:
+                animator = ObjectAnimator.ofFloat(this, View.Y, screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, height), screenHeight + toDp(activity, height));
+                animator.setInterpolator(new AccelerateInterpolator());
+                animTime = DEFAULT_SLIDE_ANIMATION_TIME;
+        }
+
+        animator.setDuration(animTime);
         animator.start();
 
         // After animation has finished, remove the ActionButton from the content frame
@@ -223,7 +259,7 @@ public class ActionButton extends ImageButton {
             public void run() {
                 ((FrameLayout) activity.findViewById(android.R.id.content)).removeView(ActionButton.this);
             }
-        }, DEFAULT_ANIMATION_TIME);
+        }, animTime);
 
         isShowing = false;
     }

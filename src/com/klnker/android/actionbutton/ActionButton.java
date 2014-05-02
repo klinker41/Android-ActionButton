@@ -41,7 +41,7 @@ public class ActionButton extends ImageButton {
     private static final String LOGTAG = "ActionButton";
 
     // some default constants for initializing the ActionButton
-    public static final int DEFAULT_DISTANCE_FROM_BOTTOM = 100;
+    public static final int DEFAULT_DISTANCE_FROM_BOTTOM = 50;
     public static final int DEFAULT_DISTANCE_FROM_RIGHT = 60;
     public static final int DEFAULT_SLIDE_ANIMATION_TIME = 150;
     public static final int DEFAULT_FADE_ANIMATION_TIME = 700;
@@ -104,7 +104,7 @@ public class ActionButton extends ImageButton {
 
     /**
      * Sets how far away from the bottom of the screen the button should be displayed.
-     * Distance will be converted to dip, so, for example, if distance = 50, then distance = 50dp.
+     * Distance should be the value in DP, it will be converted to the appropriate pixel value
      *
      * @param distance the distance from the bottom in dp
      */
@@ -114,7 +114,7 @@ public class ActionButton extends ImageButton {
 
     /**
      * Sets how far away from the right side of the screen the button should be displayed.
-     * Distance will be converted to dip, so, for example, if distance = 50, then distance = 50dp.
+     * Distance should be the value in DP, it will be converted to the appropriate pixel value
      *
      * @param distance the distance from the right in dp
      */
@@ -123,8 +123,8 @@ public class ActionButton extends ImageButton {
     }
 
     /**
-     * Sets the width of the button. Width will be converted to dip. So, for example, if width = 50,
-     * then width = 50dp
+     * Sets the width of the button. Distance should be the value in DP, it will be
+     * converted to the appropriate pixel value
      *
      * @param width the width of the circle in dp
      */
@@ -142,8 +142,8 @@ public class ActionButton extends ImageButton {
     }
 
     /**
-     * Sets the height of the button. Height will be converted to dip. So, for example, if height = 50,
-     * then height = 50dp
+     * Sets the height of the button. Distance should be the value in DP, it will be
+     * converted to the appropriate pixel value
      *
      * @param height the height of the circle in dp
      */
@@ -187,7 +187,7 @@ public class ActionButton extends ImageButton {
         final Activity activity = (Activity) getContext();
 
         // set the correct width and height for ActionButton
-        ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(toDp(activity, width), toDp(activity, height));
+        ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(toPx(activity, width), toPx(activity, height));
         this.setLayoutParams(params);
 
         // get the current content FrameLayout and add ActionButton to the top
@@ -195,23 +195,20 @@ public class ActionButton extends ImageButton {
         parent.addView(this);
 
         // get the size of the screen so we know where to animate from and to
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        float screenWidth = size.x;
-        float screenHeight = size.y;
+        float frameWidth = parent.getWidth();
+        float frameHeight = parent.getHeight();
 
         // perform the animation with an object animator, default to sliding up from bottom
-        setTranslationX(screenWidth - toDp(activity, distanceFromRight));
+        setTranslationX(frameWidth - toPx(activity, distanceFromRight));
         ObjectAnimator animator;
         switch (animation) {
             case FADE:
-                setTranslationY(screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, distanceFromBottom));
+                setTranslationY(frameHeight - toPx(activity, distanceFromBottom) - toPx(activity, distanceFromBottom));
                 animator = ObjectAnimator.ofFloat(this, View.ALPHA, 0.0f, 1.0f);
                 animator.setDuration(DEFAULT_FADE_ANIMATION_TIME);
                 break;
             default:
-                animator = ObjectAnimator.ofFloat(this, View.Y, screenHeight, screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, distanceFromBottom));
+                animator = ObjectAnimator.ofFloat(this, View.Y, frameHeight, frameHeight - toPx(activity, distanceFromBottom) - toPx(activity, height));
                 animator.setInterpolator(new DecelerateInterpolator());
                 animator.setDuration(DEFAULT_SLIDE_ANIMATION_TIME);
         }
@@ -229,14 +226,12 @@ public class ActionButton extends ImageButton {
         final Activity activity = (Activity) getContext();
 
         // get size of screen
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        float screenWidth = size.x;
-        float screenHeight = size.y;
+        FrameLayout parent = (FrameLayout) activity.findViewById(android.R.id.content);
+        float frameWidth = parent.getWidth();
+        float frameHeight = parent.getHeight();
 
         // perform animation
-        setTranslationX(screenWidth - toDp(activity, distanceFromRight));
+        setTranslationX(frameWidth - toPx(activity, distanceFromRight));
         ObjectAnimator animator;
         int animTime;
         switch (animation) {
@@ -245,7 +240,7 @@ public class ActionButton extends ImageButton {
                 animTime = DEFAULT_FADE_ANIMATION_TIME;
                 break;
             default:
-                animator = ObjectAnimator.ofFloat(this, View.Y, screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, height), screenHeight + toDp(activity, height));
+                animator = ObjectAnimator.ofFloat(this, View.Y, frameHeight - toPx(activity, distanceFromBottom) - toPx(activity, height), frameHeight + toPx(activity, height));
                 animator.setInterpolator(new AccelerateInterpolator());
                 animTime = DEFAULT_SLIDE_ANIMATION_TIME;
         }
@@ -265,13 +260,13 @@ public class ActionButton extends ImageButton {
     }
 
     /**
-     * Converts a distance into the appropriate DP value
+     * Converts a dip value into a pixel value
      *
      * @param context the current context of the application
-     * @param num the number to be converted to DP
-     * @return the value of the number in DP
+     * @param num the number to be converted to PX
+     * @return the value of the number in PX
      */
-    public static int toDp(Context context, int num) {
+    public static int toPx(Context context, int num) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, num, context.getResources().getDisplayMetrics());
     }
 }

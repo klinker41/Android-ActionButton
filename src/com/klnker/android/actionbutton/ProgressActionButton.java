@@ -51,7 +51,7 @@ public class ProgressActionButton extends ActionButton {
         progressPaint.setColor(progressColor);
         progressPaint.setAntiAlias(true);
         progressPaint.setStyle(Paint.Style.STROKE);
-        progressPaint.setStrokeWidth(toDp(context, 3));
+        progressPaint.setStrokeWidth(toPx(context, 3));
     }
 
     /**
@@ -64,6 +64,7 @@ public class ProgressActionButton extends ActionButton {
 
     /**
      * Set the current progress
+     *
      * @param progress progress out of the max progress
      */
     public void setProgress(int progress) {
@@ -84,7 +85,7 @@ public class ProgressActionButton extends ActionButton {
     }
 
     /**
-     * gets the current amount of progress
+     * Gets the current amount of progress
      *
      * @return the current progress completed
      */
@@ -112,10 +113,11 @@ public class ProgressActionButton extends ActionButton {
 
     /**
      * Sets the stroke width for the progress circle
+     *
      * @param stroke the stroke width, which will be converted to dips automatically
      */
     public void setStrokeWidth(int stroke) {
-        progressPaint.setStrokeWidth(toDp(getContext(), stroke));
+        progressPaint.setStrokeWidth(toPx(getContext(), stroke));
     }
 
     /**
@@ -123,10 +125,10 @@ public class ProgressActionButton extends ActionButton {
      */
     private void setOval() {
         this.oval = new RectF(
-                toDp(getContext(), 5),
-                toDp(getContext(), 5),
-                toDp(getContext(), getButtonWidth() - 5),
-                toDp(getContext(), getButtonHeight() - 5)
+                toPx(getContext(), 5),
+                toPx(getContext(), 5),
+                toPx(getContext(), getButtonWidth() - 5),
+                toPx(getContext(), getButtonHeight() - 5)
         );
     }
 

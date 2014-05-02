@@ -33,18 +33,21 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
+/**
+ * Class which allows simple adding an interaction of an onscreen, circular image button
+ */
 public class ActionButton extends ImageButton {
 
     private static final String LOGTAG = "ActionButton";
 
     // some default constants for initializing the ActionButton
-    private static final int DEFAULT_DISTANCE_FROM_BOTTOM = 100;
+    public static final int DEFAULT_DISTANCE_FROM_BOTTOM = 100;
     public static final int DEFAULT_DISTANCE_FROM_RIGHT = 60;
-    private static final int DEFAULT_ANIMATION_TIME = 150;
+    public static final int DEFAULT_ANIMATION_TIME = 150;
     public static final int DEFAULT_WIDTH = 50;
-    private static final int DEFAULT_HEIGHT = 50;
-    private static final int DEFAULT_COLOR = 0xFFCC0000;
-    private static final int DEFAULT_COLOR_SELECTED = 0xFFD94B4B;
+    public static final int DEFAULT_HEIGHT = 50;
+    public static final int DEFAULT_COLOR = 0xFFCC0000;
+    public static final int DEFAULT_COLOR_SELECTED = 0xFFD94B4B;
 
     // set up default values
     private int distanceFromBottom = DEFAULT_DISTANCE_FROM_BOTTOM;
@@ -123,6 +126,15 @@ public class ActionButton extends ImageButton {
     }
 
     /**
+     * Gets the width of the button
+     *
+     * @return width of the button
+     */
+    public int getButtonWidth() {
+        return this.width;
+    }
+
+    /**
      * Sets the height of the button. Height will be converted to dip. So, for example, if height = 50,
      * then height = 50dp
      *
@@ -130,6 +142,15 @@ public class ActionButton extends ImageButton {
      */
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    /**
+     * Gets the height of the button
+     *
+     * @return height of the button
+     */
+    public int getButtonHeight() {
+        return this.height;
     }
 
     /**
@@ -213,7 +234,7 @@ public class ActionButton extends ImageButton {
      * @param num the number to be converted to DP
      * @return the value of the number in DP
      */
-    private static final int toDp(Context context, int num) {
+    public static int toDp(Context context, int num) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, num, context.getResources().getDisplayMetrics());
     }
 }

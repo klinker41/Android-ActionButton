@@ -28,6 +28,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
@@ -171,7 +172,7 @@ public class ActionButton extends ImageButton {
         final Activity activity = (Activity) getContext();
 
         // set the correct width and height for ActionButton
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(toDp(activity, width), toDp(activity, height));
+        ViewGroup.LayoutParams params = new FrameLayout.LayoutParams(toDp(activity, width), toDp(activity, height));
         this.setLayoutParams(params);
 
         // get the current content FrameLayout and add ActionButton to the top
@@ -187,7 +188,7 @@ public class ActionButton extends ImageButton {
 
         // perform the animation with an object animator
         setTranslationX(screenWidth - toDp(activity, distanceFromRight));
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.Y, screenHeight, screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, DEFAULT_HEIGHT));
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.Y, screenHeight, screenHeight - toDp(activity, distanceFromBottom) - toDp(activity, distanceFromBottom));
         animator.setInterpolator(new DecelerateInterpolator());
         animator.setDuration(DEFAULT_ANIMATION_TIME);
         animator.start();

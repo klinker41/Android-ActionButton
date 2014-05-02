@@ -111,6 +111,14 @@ public class ProgressActionButton extends ActionButton {
     }
 
     /**
+     * Sets the stroke width for the progress circle
+     * @param stroke the stroke width, which will be converted to dips automatically
+     */
+    public void setStrokeWidth(int stroke) {
+        progressPaint.setStrokeWidth(toDp(getContext(), stroke));
+    }
+
+    /**
      * Sets up the oval that we will draw the progress circle with accordance to
      */
     private void setOval() {

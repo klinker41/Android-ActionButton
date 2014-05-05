@@ -52,7 +52,7 @@ public class ActionButton extends ImageButton {
 
     // animations that can be set for the ActionButton when it is showing and hiding
     public enum ActionButtonAnimation {
-        SLIDE_FROM_BOTTOM, FADE
+        SLIDE_FROM_BOTTOM, SLIDE_FROM_RIGHT, FADE
     }
 
     // set up default values
@@ -207,10 +207,17 @@ public class ActionButton extends ImageButton {
                 animator = ObjectAnimator.ofFloat(this, View.ALPHA, 0.0f, 1.0f);
                 animator.setDuration(DEFAULT_FADE_ANIMATION_TIME);
                 break;
+            case SLIDE_FROM_RIGHT:
+                setTranslationY(frameHeight - toPx(activity, distanceFromBottom) - toPx(activity, height));
+                animator = ObjectAnimator.ofFloat(this, View.X, frameWidth, frameWidth - toPx(activity, distanceFromRight));
+                animator.setInterpolator(new DecelerateInterpolator());
+                animator.setDuration(DEFAULT_SLIDE_ANIMATION_TIME);
+                break;
             default:
                 animator = ObjectAnimator.ofFloat(this, View.Y, frameHeight, frameHeight - toPx(activity, distanceFromBottom) - toPx(activity, height));
                 animator.setInterpolator(new DecelerateInterpolator());
                 animator.setDuration(DEFAULT_SLIDE_ANIMATION_TIME);
+                break;
         }
 
         animator.start();
@@ -238,6 +245,13 @@ public class ActionButton extends ImageButton {
             case FADE:
                 animator = ObjectAnimator.ofFloat(this, View.ALPHA, 1.0f, 0.0f);
                 animTime = DEFAULT_FADE_ANIMATION_TIME;
+                break;
+            case SLIDE_FROM_RIGHT:
+                setTranslationY(frameHeight - toPx(activity, distanceFromBottom) - toPx(activity, height));
+                animator = ObjectAnimator.ofFloat(this, View.X, frameWidth - toPx(activity, distanceFromRight), frameWidth);
+                animator.setInterpolator(new DecelerateInterpolator());
+                animator.setDuration(DEFAULT_SLIDE_ANIMATION_TIME);
+                animTime = DEFAULT_SLIDE_ANIMATION_TIME;
                 break;
             default:
                 animator = ObjectAnimator.ofFloat(this, View.Y, frameHeight - toPx(activity, distanceFromBottom) - toPx(activity, height), frameHeight + toPx(activity, height));

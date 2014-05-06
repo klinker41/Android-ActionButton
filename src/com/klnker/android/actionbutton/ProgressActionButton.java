@@ -74,7 +74,7 @@ public class ProgressActionButton extends ActionButton {
         postInvalidate();
 
         // if we are done, post a hiding of the view to the ui thread
-        if (progress == maxProgress) {
+        if (progress >= maxProgress && getHandler() != null) {
             getHandler().post(new Runnable() {
                 @Override
                 public void run() {

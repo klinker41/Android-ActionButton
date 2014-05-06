@@ -56,10 +56,12 @@ public class ProgressActionButton extends ActionButton {
 
     /**
      * sets the color of the progress bar stroke
+     *
      * @param color color int to be used
      */
-    private void setProgressColor(int color) {
+    public void setProgressColor(int color) {
         this.progressColor = color;
+        this.progressPaint.setColor(color);
     }
 
     /**

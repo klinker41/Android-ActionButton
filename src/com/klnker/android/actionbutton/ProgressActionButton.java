@@ -73,7 +73,13 @@ public class ProgressActionButton extends ActionButton {
         this.currentProgress = progress;
 
         // invalidate view so it is redrawn
-        postInvalidate();
+        try {
+            postInvalidate();
+        } catch (Error e) {
+            // hmm, something went wrong.
+            // StackOverflow maybe? Not sure of a better way to post this to the UI thread though
+            e.printStackTrace();
+        }
 
         // if we are done, post a hiding of the view to the ui thread
         if (progress >= maxProgress && getHandler() != null) {

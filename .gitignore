@@ -76,3 +76,4 @@ example/proguard-project.txt
 *proguard-project.txt
 library/build.gradle
 /gen
+.gradle/

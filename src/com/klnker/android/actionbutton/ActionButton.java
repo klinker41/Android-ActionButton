@@ -19,13 +19,12 @@ package com.klnker.android.actionbutton;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Point;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.Build;
 import android.os.Handler;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -74,6 +73,11 @@ public class ActionButton extends ImageButton {
 
         // set colors to their defaults in case user doesn't specifically implement them
         setColors(DEFAULT_COLOR, DEFAULT_COLOR_SELECTED);
+
+        // set the elevation of the actionbutton when applicable
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+            setElevation(toPx(context, 5));
+        }
     }
 
     /**

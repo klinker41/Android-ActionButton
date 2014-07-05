@@ -16,8 +16,10 @@ limitations under the License.
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.klnker.android.actionbutton">
 
+    <uses-sdk tools:node="replace" />
     <application/>
 
 </manifest>

@@ -29,6 +29,13 @@ Note: Currently only supported for API version 14 and higher, if I have time I m
 I highly suggest people begin setting their minSdkVersion to 14, there are so many more possibilities and Gingerbread
 is dying!
 
+## Gradle
+
+To include in your gradle projects:
+
+```groovy
+compile 'com.klinkerapps:android-actionbutton:+@aar'
+```
 ## License
 
     Copyright 2013-2014 Jacob Klinker

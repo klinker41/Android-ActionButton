@@ -32,8 +32,6 @@ android {
         applicationId 'com.klinker.android.actionbutton'
         minSdkVersion 14
         targetSdkVersion 20
-        versionCode 1
-        versionName "1.0.0"
     }
 
     lintOptions {

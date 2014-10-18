@@ -19,7 +19,6 @@ limitations under the License.
           xmlns:tools="http://schemas.android.com/tools"
           package="com.klnker.android.actionbutton">
 
-    <uses-sdk tools:node="replace" />
     <application/>
 
 </manifest>
